@@ -1,0 +1,106 @@
+<h2 class="mt-4 mb-3">Cadastro Fornecedor</h2>
+
+<hr />
+
+<form #f="ngForm" (ngSubmit)="f.form.valid && save(fornecedor)">
+  <div class="form-group">
+    <label>Empresa</label>
+    <div class="input-group">
+      <select class="form-control"
+              name="empresa"
+              [(ngModel)]="empresaCNPJ"
+              #ngEmpresa="ngModel"
+              required>
+        <option *ngFor="let empresa of empresas" value="{{ empresa.cnpj }}">{{ empresa.nomeFantasia }}</option>
+      </select>
+      <div class="input-group-append">
+        <a class="btn btn-dark" [routerLink]="['/empresas/new']">Nova Empresa</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>Nome</label>
+    <input type="text"
+           class="form-control"
+           name="nome"
+           [(ngModel)]="nome"
+           #ngNome="ngModel"
+           required />
+  </div>
+
+  <div class="form-group">
+    <label>Documento</label>
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <div class="input-group-text">
+          <input type="radio" name="tipoDocumento" id="tipoCNPJ" value="CNPJ" [(ngModel)]="tipoDocumento" checked />
+          <label class="form-check-label" for="tipoCNPJ">CNPJ</label>
+        </div>
+        <div class="input-group-text">
+          <input type="radio" name="tipoDocumento" id="tipoCPF" value="CPF" [(ngModel)]="tipoDocumento" />
+          <label class="form-check-label" for="tipoCPF">CPF</label>
+        </div>
+      </div>
+      <input type="text"
+             class="form-control"
+             name="documento"
+             [(ngModel)]="documento"
+             #ngDocumento="ngModel"
+             required />
+    </div>
+  </div>
+
+  <div *ngIf="tipoDocumento == 'CPF'">
+    <div class="form-group">
+      <label>RG</label>
+      <input type="text"
+             class="form-control"
+             name="rg"
+             [(ngModel)]="rg"
+             #ngRg="ngModel"
+             required />
+    </div>
+
+    <div class="form-group">
+      <label>Data de Nascimento</label>
+      <input type="text"
+             class="form-control"
+             name="dataNascimento"
+             placeholder="dd/mm/yyyy"
+             [(ngModel)]="dataNascimento"
+             #ngDataNascimento="ngModel"
+             required />
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>Telefones</label>
+    <div class="input-group mb-2">
+      <input type="text"
+             class="form-control"
+             name="telefone"
+             placeholder="+00 (00) 00000 0000"
+             [(ngModel)]="telefone"
+             #ngTel="ngModel" />
+      <div class="input-group-append">
+        <button type="button" class="btn btn-dark" (click)="addTelefone(telefone)">Adicionar</button>
+      </div>
+    </div>
+    <table class="table table-borderless">
+      <tbody>
+        <tr *ngFor="let tel of telefones">
+          <td>{{ tel.numeroTelefone }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="mensagemErro" class="alert alert-danger" role="alert">{{ mensagemErro }}</div>
+
+  <hr />
+  <div class="form-group">
+    <button type="submit" class="btn btn-dark mr-sm-2">Salvar</button>
+    <a class="btn btn-outline-dark" [routerLink]="['/']">Cancelar</a>
+  </div>
+</form>
